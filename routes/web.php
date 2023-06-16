@@ -29,7 +29,6 @@ Route::get('/complete', 'App\http\Controllers\TaskController@complete');
 
 Route::get('/incomplete', 'App\http\Controllers\TaskController@incomplete');
 
-Route::get('/editStatus/{id}', 'App\http\Controllers\TaskController@editStatus');
-
-Route::put('/update/{id}/status', 'App\http\Controllers\TaskController@updateStatus');
-
+Route::prefix('tasks')->group(function () {
+    Route::put('{tasks:id}/status', 'App\http\Controllers\TaskController@updateStatus')->name('tasks.updateStatus');
+});

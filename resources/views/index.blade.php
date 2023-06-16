@@ -19,7 +19,7 @@
     </center>
     <br>
     <center>
-        <a href="{{ url('/create') }}" type="button" class="btn btn-primary">
+        <a href="{{ url('/create') }}" type="button" class="btn btn-info">
             <i class="fas fa-plus"></i> Tambah Data
         </a>
     </center>
@@ -27,7 +27,7 @@
     <center>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
             <a href="/incomplete" type="button" class="btn btn-warning">Incomplete</a>
-            <a href="/complete" type="button" class="btn btn-success">Complete</a>
+            <a href="/complete" type="button" class="btn btn-success">Completed</a>
         </div>
     </center>
     <br>
@@ -40,6 +40,7 @@
                 <th scope="col">Deskripsi</th>
                 <th scope="col">Status</th>
                 <th scope="col">Aksi</th>
+                <th scope="col">Ubah Status</th>
             </tr>
         </thead>
         <tbody>
@@ -52,10 +53,20 @@
                 <td>
                     <form action="/task/{{ $item->id }}" method="POST">
                         <a href="{{ url('edit', $item->id) }}" class="btn btn-warning"><i class="fa-solid fa-pen"></i> Edit</a>
-                        <a href="{{ url('editStatus', $item->id) }}" class="btn btn-warning"><i class="fa-solid fa-pen"></i> Edit Status</a>
                         @method("delete")
                         @csrf
                         <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ route('tasks.updateStatus', [$item->id]) }}" method="post">
+                        @csrf
+                        @method('put')
+                        @if ($item->status === 'Completed')
+                        <button type="submit" class="btn btn-primary" value="{{ $item->status }}">Completed</button>
+                        @else
+                        <button type="submit" class="btn btn-secondary" value="{{ $item->status }}">Incomplete</button>
+                        @endif
                     </form>
                 </td>
             </tr>

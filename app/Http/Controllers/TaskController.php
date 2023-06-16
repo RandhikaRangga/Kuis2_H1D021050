@@ -116,7 +116,7 @@ class TaskController extends Controller
 
     public function complete()
     {
-        $task = Task::where('status', 'Complete')->get();
+        $task = Task::where('status', 'Completed')->get();
 
         return view('complete', compact('task'));
     }
@@ -128,30 +128,13 @@ class TaskController extends Controller
         return view('incomplete', compact('task'));
     }
 
-    public function editStatus(string $id)
+    public function updateStatus($id): RedirectResponse
     {
-        //get post by ID
         $task = Task::findOrFail($id);
+        $task->update([
+            'status' => $task->status === 'Completed' ? 'Incomplete' : 'Completed',
+        ]);
 
-        $list = array('Complete', 'Incomplete');
-
-        //render view with post
-        return redirect('/update/{id}/status', compact('task'));
-    }
-
-    public function updateStatus(Request $request, $id): RedirectResponse
-    {
-        //get post by ID
-        $task = Task::findOrFail($id);
-
-        if ($request->where('status', 'Complete')) {
-            //update post without image
-            $task->update([
-                'status'   => $request->Incomplete,
-            ]);
-        }
-
-        //redirect to index
-        return redirect('/')->with(['success' => 'Data Berhasil Diubah!']);
+        return redirect('/');
     }
 }
